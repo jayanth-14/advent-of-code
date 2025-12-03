@@ -31,9 +31,18 @@ const perform = (instruction, allInstructions) => {
 	save(result, destination, allInstructions);
 }
 
-const compute = code => {
+const updateInstructions = (instructions, updates) => {
+  const entries = Object.entries(updates);
+  for(const entry of entries) {
+    const [destination, value] = entry;
+    instructions[destination] = value;
+  }
+}
+
+const compute = (code, updates) => {
 	const instructions = parseInstructions(code);
-	try {
+ updateInstructions(instructions, updates); 
+  try {
 		let i = 0;
 		while (i < instructions.length) {
 			const instruction = instructions.slice(i, i + 4); i += 4;
