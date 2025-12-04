@@ -10,20 +10,23 @@ const getValue = (type, location, instructions) => {
 }
 const save = (value, location, instructions) => instructions[location] = value;  
 
-const add = (instructions, x,y) => x + y;
+const add = (instructions, p, x,y) => [x + y, ++p];
 
-const mul = (instructions,x,y) => x * y;
+const mul = (instructions, p, x,y) => [x * y, ++p];
 
 const halt = () => {throw "HALT"};
 
 const stdin = 1;
 const stdout = []
 
-const read = (instructions, x) => {
-  instructions[x] = stdin; 
-  console.log('updated', x);
+const read = (instructions, p, x) => {
+  instructions[x] = stdin;
+  return [0, ++p];
 }
-const write = (instructions, x) => stdout.push(x);
+const write = (instructions, p, x) => {
+  stdout.push(x);
+  return [0, ++p];
+}
 
 const OPCODES = {
 	'01' : {operation: add, argsCount : 3, shouldSave : true , lastType : 1},
@@ -47,13 +50,11 @@ const perform = (pointer, instructions) => {
 		const value = getValue(type, loc, instructions);
 		args.push(value);
 	} 
-  const result = operation(instructions,...args);
-  console.log({result});
+  const [result, p] = operation(instructions, pointer,...args);
 	if (shouldSave){
-    console.log("saving", opcode);
     save(result, args[args.length- 1], instructions);
   }
-	return ++pointer;
+	return p;
 }
 
 
