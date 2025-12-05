@@ -49,11 +49,11 @@ const OPCODES = {
 	'01' : {operation: add, argsCount : 3, shouldSave : true , lastType : 1},
 	'02' : {operation : mul, argsCount : 3, shouldSave : true , lastType : 1},
   '03' : {operation: read, argsCount : 1, shouldSave : false , lastType : 1},
-  '04' : {operation: write, argsCount : 1, shouldSave : false, lastType : 1},
-  '05' : {operation: jumpIfTrue, argsCount : 2, shouldSave : false, lastType : 1},
-  '06' : {operation: jumpIfFalse, argsCount : 2, shouldSave : false, lastType : 1},
-  '07' : {operation: lessThan, argsCount : 3, shouldSave : false, lastType : 0},
-  '08' : {operation: equalTo, argsCount : 3, shouldSave : false, lastType : 0},
+  '04' : {operation: write, argsCount : 1, shouldSave : false, lastType : 0},
+  '05' : {operation: jumpIfTrue, argsCount : 2, shouldSave : false, lastType : 0},
+  '06' : {operation: jumpIfFalse, argsCount : 2, shouldSave : false, lastType : 0},
+  '07' : {operation: lessThan, argsCount : 3, shouldSave : false, lastType : 1},
+  '08' : {operation: equalTo, argsCount : 3, shouldSave : false, lastType : 1},
 	'99' : {operation : halt, argsCount : 0, shouldSave : false, lastType : 0}
 }
 
@@ -62,7 +62,6 @@ const getOperations = opcode => OPCODES[opcode];
 const getType = (index, argTypes, argsCount, lastType) => {
   let type = argTypes[index - 1];
   const defaultType = index === argsCount ? lastType : 0;
-  console.log({index, argTypes, argsCount, lastType, type, defaultType});
   return type || defaultType;
 }
 
