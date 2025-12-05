@@ -1,17 +1,3 @@
-const map = {
-  'B' : 'COM',
-  'C' : 'B',
-  'D' : 'C',
-  'E' : 'D',
-  'F' : 'E',
-  'G' : 'B',
-  'H' : 'G',
-  'I' : 'D',
-  'J' : 'E',
-  'K' : 'J',
-  'L' : 'K'
-}
-
 const orbit = (object, map) => map[object];
 
 const orbitsCount = (object, map) => {
@@ -38,3 +24,21 @@ const parseMap = (rawMap) => {
 }
 
 const orbitCheckSums = (rawMap) => totalOrbits(parseMap(rawMap));
+
+const allOrbits = (object, map) => {
+  const orbits = [];
+  let orb = orbit(object, map);
+  while ( orb !== undefined) {
+    orbits.push(orb);
+    orb = orbit(orb, map);
+  }
+  return orbits.slice(0, -2);
+}
+
+const stepsBetween = (location, destination, rawMap) => {
+  const map = parseMap(rawMap);
+  const locToCenter = allOrbits(location, map);
+  const desToCenter = allOrbits(destination, map);
+  const intersecting = locToCenter.find(x => desToCenter.includes(x));
+  return locToCenter.indexOf(intersecting) + desToCenter.indexOf(intersecting);
+}
