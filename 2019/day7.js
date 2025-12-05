@@ -1,9 +1,3 @@
-import { chunk } from "jsr:@std/collections";
-
-const parseInstructions = code => code.split(',');
-
-const chunkInstructions = instructions => chunk(instructions,4);
-
 const getValue = (type, location, instructions) => {
   const value = type === 0 ? instructions[location] : location;
   return parseInt(value);
