@@ -38,15 +38,15 @@ const jumpIfTrue = (instructions, p, x, y) => [0, parseInt(x) > 0 ? y : ++p];
 const jumpIfFalse = (instructions, p, x, y) =>[0, parseInt(x) ? ++p : y];
 
 const lessThan = (instructions, p, x, y, z) => {
-    const result = x < y ? 1 : 0;
-    save(result, z, instructions);
-    return [0, ++p];
+  const result = x < y ? 1 : 0;
+  save(result, z, instructions);
+  return [0, ++p];
 }
 
 const equalTo = (instructions, p, x, y, z) => {
   const result = x === y ? 1 : 0;
-    save(result, z, instructions);
-    return [0, ++p];
+  save(result, z, instructions);
+  return [0, ++p];
 }
 
 const OPCODES = {

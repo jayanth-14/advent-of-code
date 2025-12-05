@@ -22,7 +22,20 @@ yes, My code need refactoring. The issues are :
 - Need to add a blank line after each function.
 - make the identation consistent.
 - remove all the console.logs.
+- remove the chunk related code which is currently not used.
 
 ## Logical
 - Need to extract logics to individual functions. (getArgTypes, getArgs)
 - Remove shouldSave key and make the add and mul save them.
+
+# Can the refactoring be made smaller?
+- [x] Yes. First I check if the code is working properly.
+- [x] Then add a line after each function and commit it.
+- [x] YThen make the identation proper and commit it.
+- Remove all the console.logs and commit it.
+- Remove chunk code. Commit it. Test it.
+- Then re-evalute the code and if everything is okay, I will move to `Logical` refactoring.
+---
+- Extract the logic of opcode breaking into a function. Test it. Commit it.
+- Extract the fetching the arguments to a different function. Test it. Commit it.
+- Remove the `shouldSave` key and make the add and mul save them. Test it. Commit it.
