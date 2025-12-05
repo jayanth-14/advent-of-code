@@ -10,7 +10,6 @@ const getValue = (type, location, instructions) => {
 }
 
 const save = (value, location, instructions) => {
-  console.log({value, location })
   instructions[location] = value;  
 }
 
@@ -34,9 +33,9 @@ const write = (instructions, p, x) => {
   return [0, ++p];
 }
 
-const jumpIfTrue = (instructions, p, x, y) => console.log({x,y}) || [0, parseInt(x) > 0 ? y : ++p];
+const jumpIfTrue = (instructions, p, x, y) => [0, parseInt(x) > 0 ? y : ++p];
 
-const jumpIfFalse = (instructions, p, x, y) =>console.log({x,y}) || [0, parseInt(x) ? ++p : y];
+const jumpIfFalse = (instructions, p, x, y) =>[0, parseInt(x) ? ++p : y];
 
 const lessThan = (instructions, p, x, y, z) => {
     const result = x < y ? 1 : 0;
@@ -83,7 +82,6 @@ const perform = (pointer, instructions) => {
 		args.push(value);
 	}
   const [result, p] = operation(instructions, pointer,...args);
-  console.log({result, p});
 	if (shouldSave){
    save(result, args[args.length- 1], instructions);
   }
@@ -96,7 +94,6 @@ const compute = (code) => {
   try {
 		let i = 0;
 		while (i < instructions.length) {
-      console.log({i, instruction : instructions[i]})
 			i = perform(i, instructions);
 		}
 	} catch(e) {
