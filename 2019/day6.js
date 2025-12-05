@@ -16,4 +16,14 @@
 // => increase the count.
 // => repeat till we find something which don't revolve around anything.
 
+// Can this be made smaller?
+// yes - I can only do for single object. It will take all orbits data, and find what it is orbiting around. and increase the count.
+
+// Can this be made smaller?
+// yes - I can break it into two tasks. First being finding what it is revolving around. If yes return it or else return nothing.
+// And second being if it increase the count if what it is provided is not available in the all orbits data.
+
+// Can the second task smaller?
+// yes - I can make it into two tasks. One check if given object is a valid object in the space.
+// Second if valid increase the count.
 
