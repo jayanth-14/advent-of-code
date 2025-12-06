@@ -31,10 +31,10 @@ yes, My code need refactoring. The issues are :
 # Can the refactoring be made smaller?
 - [x] Yes. First I check if the code is working properly.
 - [x] Then add a line after each function and commit it.
-- [x] YThen make the identation proper and commit it.
-- Remove all the console.logs and commit it.
-- Remove chunk code. Commit it. Test it.
-- Then re-evalute the code and if everything is okay, I will move to `Logical` refactoring.
+- [x] Then make the identation proper and commit it.
+- [x] Remove all the console.logs and commit it.
+- [x] Remove chunk code. Commit it. Test it.
+- [x] Then re-evalute the code and if everything is okay, I will move to `Logical` refactoring.
 ---
 - Extract the logic of opcode breaking into a function. Test it. Commit it.
 - Extract the fetching the arguments to a different function. Test it. Commit it.

@@ -1,3 +1,5 @@
+const parseInstructions = code => code.split(',');
+
 const getValue = (type, location, instructions) => {
   const value = type === 0 ? instructions[location] : location;
   return parseInt(value);
@@ -63,11 +65,16 @@ const getType = (index, argTypes, argsCount, lastType) => {
   return type || defaultType;
 }
 
+const getCode = (opcode) => {
+  const sliced = opcode.slice(-2);
+  return sliced.length === 1 ? '0' + sliced : sliced;
+}
+
+const parseOpcode = (opcode) => [getCode(opcode), opcode.slice(0, -2).split('').reverse()];
+
 const perform = (pointer, instructions) => {
-	let opcode = instructions[pointer].toString();
-  opcode = opcode.length === 1 ? "0" + opcode : opcode;
-	const {operation, argsCount, shouldSave, lastType } = getOperations(opcode.slice(-2));
-	const argTypes = opcode.slice(0,-2).split('').reverse();
+  const [opcode, argTypes] = parseOpcode(instructions[pointer].toString());
+	const {operation, argsCount, shouldSave, lastType } = getOperations(opcode)
 	const args = [];
 	for (let index = 1; index <= argsCount; index++) {
 		const type =  parseInt(getType(index, argTypes, argsCount, lastType));
