@@ -9,9 +9,9 @@ const save = (value, location, instructions) => {
   instructions[location] = value;  
 }
 
-const add = (instructions, p, x,y) => [x + y, ++p];
+const add = (instructions, p, x, y, z) => save(x+y, z, instructions) || [0, ++p];
 
-const mul = (instructions, p, x,y) => [x * y, ++p];
+const mul = (instructions, p, x, y, z) => save(x * y, z, instructions) || [0, ++p];
 
 const halt = () => {throw "HALT"};
 
@@ -46,15 +46,15 @@ const equalTo = (instructions, p, x, y, z) => {
 }
 
 const OPCODES = {
-	'01' : {operation: add, argsCount : 3, shouldSave : true , lastType : 1},
-	'02' : {operation : mul, argsCount : 3, shouldSave : true , lastType : 1},
-  '03' : {operation: read, argsCount : 1, shouldSave : false , lastType : 1},
-  '04' : {operation: write, argsCount : 1, shouldSave : false, lastType : 0},
-  '05' : {operation: jumpIfTrue, argsCount : 2, shouldSave : false, lastType : 0},
-  '06' : {operation: jumpIfFalse, argsCount : 2, shouldSave : false, lastType : 0},
-  '07' : {operation: lessThan, argsCount : 3, shouldSave : false, lastType : 1},
-  '08' : {operation: equalTo, argsCount : 3, shouldSave : false, lastType : 1},
-	'99' : {operation : halt, argsCount : 0, shouldSave : false, lastType : 0}
+	'01' : {operation: add, argsCount : 3 , lastType : 1},
+	'02' : {operation : mul, argsCount : 3, lastType : 1},
+  '03' : {operation: read, argsCount : 1 , lastType : 1},
+  '04' : {operation: write, argsCount : 1, lastType : 0},
+  '05' : {operation: jumpIfTrue, argsCount : 2, lastType : 0},
+  '06' : {operation: jumpIfFalse, argsCount : 2, lastType : 0},
+  '07' : {operation: lessThan, argsCount : 3, lastType : 1},
+  '08' : {operation: equalTo, argsCount : 3, lastType : 1},
+	'99' : {operation : halt, argsCount : 0, lastType : 0}
 }
 
 const getOperations = opcode =>  OPCODES[opcode];
@@ -85,12 +85,9 @@ const getArgs = (instructions, pointer, argTypes, {argsCount, lastType}) => {
 
 const perform = (pointer, instructions) => {
   const [opcode, argTypes] = parseOpcode(instructions[pointer].toString());
-	const {operation, shouldSave, ...rest } = getOperations(opcode)
+	const {operation, ...rest } = getOperations(opcode)
   const [args, np] = getArgs(instructions, pointer, argTypes, rest);
   const [result, p] = operation(instructions, np,...args);
-	if (shouldSave){
-   save(result, args[args.length- 1], instructions);
-  }
 	return p;
 }
 
