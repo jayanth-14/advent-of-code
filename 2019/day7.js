@@ -31,9 +31,9 @@ const write = (instructions, p, x) => {
   return [0, ++p];
 }
 
-const jumpIfTrue = (instructions, p, x, y) => [0, parseInt(x) > 0 ? y : ++p];
+const jumpIfTrue = (instructions, p, x, y) => [0, ternary(parseInt(x), y, ++p)];
 
-const jumpIfFalse = (instructions, p, x, y) =>[0, parseInt(x) ? ++p : y];
+const jumpIfFalse = (instructions, p, x, y) =>[0, ternary(parseInt(x), ++p, y)];
 
 const lessThan = (instructions, p, x, y, z) => {
   const result = x < y ? 1 : 0;
