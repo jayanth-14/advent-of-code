@@ -11,9 +11,11 @@ const save = (value, location, instructions) => {
   instructions[location] = value;  
 }
 
-const add = (instructions, p, x, y, z) => save(x+y, z, instructions) || [0, ++p];
+const success = (p) => [0, ++p];
 
-const mul = (instructions, p, x, y, z) => save(x * y, z, instructions) || [0, ++p];
+const add = (instructions, p, x, y, z) => save(x+y, z, instructions) || success(p);
+
+const mul = (instructions, p, x, y, z) => save(x * y, z, instructions) || success(p);
 
 const halt = () => {throw "HALT"};
 
@@ -23,28 +25,28 @@ const stdout = []
 
 const read = (instructions, p, x) => {
   instructions[x] = stdin;
-  return [0, ++p];
+  return success(p); 
 }
 
 const write = (instructions, p, x) => {
   stdout.push(x);
-  return [0, ++p];
+  return success(p);
 }
 
-const jumpIfTrue = (instructions, p, x, y) => [0, ternary(parseInt(x), y, ++p)];
+const jumpIfTrue = (instructions, p, x, y) => success(ternary(parseInt(x), y, ++p));
 
-const jumpIfFalse = (instructions, p, x, y) =>[0, ternary(parseInt(x), ++p, y)];
+const jumpIfFalse = (instructions, p, x, y) =>success(ternary(parseInt(x), ++p, y));
 
 const lessThan = (instructions, p, x, y, z) => {
   const result = ternary(x < y , 1 , 0);
   save(result, z, instructions);
-  return [0, ++p];
+  return success(p); 
 }
 
 const equalTo = (instructions, p, x, y, z) => {
   const result = ternary(x === y , 1 , 0);
   save(result, z, instructions);
-  return [0, ++p];
+  return success(p);
 }
 
 const OPCODES = {
