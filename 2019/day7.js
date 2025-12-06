@@ -36,13 +36,13 @@ const jumpIfTrue = (instructions, p, x, y) => [0, ternary(parseInt(x), y, ++p)];
 const jumpIfFalse = (instructions, p, x, y) =>[0, ternary(parseInt(x), ++p, y)];
 
 const lessThan = (instructions, p, x, y, z) => {
-  const result = x < y ? 1 : 0;
+  const result = ternary(x < y , 1 , 0);
   save(result, z, instructions);
   return [0, ++p];
 }
 
 const equalTo = (instructions, p, x, y, z) => {
-  const result = x === y ? 1 : 0;
+  const result = ternary(x === y , 1 , 0);
   save(result, z, instructions);
   return [0, ++p];
 }
