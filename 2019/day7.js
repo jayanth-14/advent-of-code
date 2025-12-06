@@ -57,9 +57,9 @@ const OPCODES = {
 	'99' : {operation : halt, argsCount : 0, shouldSave : false, lastType : 0}
 }
 
-const getOperations = opcode => OPCODES[opcode];
+const getOperations = opcode =>  OPCODES[opcode];
 
-const getType = (index, argTypes, argsCount, lastType) => {
+const getType = (index, argTypes, lastType, argsCount) => {
   let type = argTypes[index - 1];
   const defaultType = index === argsCount ? lastType : 0;
   return type || defaultType;
@@ -72,17 +72,22 @@ const getCode = (opcode) => {
 
 const parseOpcode = (opcode) => [getCode(opcode), opcode.slice(0, -2).split('').reverse()];
 
+const getArgs = (instructions, pointer, argTypes, {argsCount, lastType}) => {
+  const args = [];
+  for (let index = 1; index <= argsCount; index++) {
+    const type = parseInt(getType(index, argTypes, lastType, argsCount ));
+    const loc = instructions[++pointer];
+    const value = getValue(type, loc, instructions);
+    args.push(value);
+  }
+  return [args, pointer];
+}
+
 const perform = (pointer, instructions) => {
   const [opcode, argTypes] = parseOpcode(instructions[pointer].toString());
-	const {operation, argsCount, shouldSave, lastType } = getOperations(opcode)
-	const args = [];
-	for (let index = 1; index <= argsCount; index++) {
-		const type =  parseInt(getType(index, argTypes, argsCount, lastType));
-		const loc = instructions[++pointer];
-		const value = getValue(type, loc, instructions);
-		args.push(value);
-	}
-  const [result, p] = operation(instructions, pointer,...args);
+	const {operation, shouldSave, ...rest } = getOperations(opcode)
+  const [args, np] = getArgs(instructions, pointer, argTypes, rest);
+  const [result, p] = operation(instructions, np,...args);
 	if (shouldSave){
    save(result, args[args.length- 1], instructions);
   }
