@@ -36,6 +36,6 @@ yes, My code need refactoring. The issues are :
 - [x] Remove chunk code. Commit it. Test it.
 - [x] Then re-evalute the code and if everything is okay, I will move to `Logical` refactoring.
 ---
-- Extract the logic of opcode breaking into a function. Test it. Commit it.
-- Extract the fetching the arguments to a different function. Test it. Commit it.
-- Remove the `shouldSave` key and make the add and mul save them. Test it. Commit it.
+- [x] Extract the logic of opcode breaking into a function. Test it. Commit it.
+- [x] Extract the fetching the arguments to a different function. Test it. Commit it.
+- [x] Remove the `shouldSave` key and make the add and mul save them. Test it. Commit it.

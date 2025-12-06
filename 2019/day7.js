@@ -1,7 +1,9 @@
 const parseInstructions = code => code.split(',');
 
+const ternary = (condition, x, y) => condition ? x : y;
+
 const getValue = (type, location, instructions) => {
-  const value = type === 0 ? instructions[location] : location;
+  const value = ternary(type === 0, instructions[location], location);
   return parseInt(value);
 }
 
