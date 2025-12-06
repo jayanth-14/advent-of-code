@@ -91,8 +91,7 @@ const perform = (pointer, instructions) => {
   const [opcode, argTypes] = parseOpcode(instructions[pointer].toString());
 	const {operation, ...rest } = getOperations(opcode)
   const [args, np] = getArgs(instructions, pointer, argTypes, rest);
-  const [result, p] = operation(instructions, np,...args);
-	return p;
+  return operation(instructions, np,...args);
 }
 
 
@@ -100,8 +99,11 @@ const compute = (code) => {
 	const instructions = parseInstructions(code);
   try {
 		let i = 0;
+    let stat = 0;
 		while (i < instructions.length) {
-			i = perform(i, instructions);
+			const [ns, ni] = perform(i, instructions);
+      i = ni;
+      stat = ns;
 		}
 	} catch(e) {
     console.log('error', e)
