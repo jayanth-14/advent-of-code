@@ -63,13 +63,13 @@ const getOperations = opcode =>  OPCODES[opcode];
 
 const getType = (index, argTypes, lastType, argsCount) => {
   let type = argTypes[index - 1];
-  const defaultType = index === argsCount ? lastType : 0;
+  const defaultType = ternary(index === argsCount , lastType , 0);
   return type || defaultType;
 }
 
 const getCode = (opcode) => {
   const sliced = opcode.slice(-2);
-  return sliced.length === 1 ? '0' + sliced : sliced;
+  return ternary(sliced.length === 1 , '0' + sliced , sliced);
 }
 
 const parseOpcode = (opcode) => [getCode(opcode), opcode.slice(0, -2).split('').reverse()];
