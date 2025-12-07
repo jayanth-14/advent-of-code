@@ -11,6 +11,9 @@ const save = (value, location, instructions) => {
   instructions[location] = value;  
 }
 
+let stdin = [];
+let stdout = [];
+
 const success = (p) => [0, ++p];
 
 const add = (instructions, p, x, y, z) => save(x+y, z, instructions) || success(p);
@@ -19,12 +22,10 @@ const mul = (instructions, p, x, y, z) => save(x * y, z, instructions) || succes
 
 const halt = () => {throw "HALT"};
 
-const stdin = 1;
-
-const stdout = []
+const last = array => array.slice(-1);
 
 const read = (instructions, p, x) => {
-  instructions[x] = stdin;
+  instructions[x] = last(stdin);
   return success(p); 
 }
 
@@ -95,8 +96,10 @@ const perform = (pointer, instructions) => {
 }
 
 
-const compute = (code) => {
+const compute = (code, inputReference = [0], outputReference = []) => {
 	const instructions = parseInstructions(code);
+  stdin = inputReference;
+  stdout = outputReference;
   try {
 		let i = 0;
     let stat = 0;
