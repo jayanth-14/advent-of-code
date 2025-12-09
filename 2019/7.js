@@ -1,55 +1,9 @@
-import {permutations} from 'jsr:@std/collections';
-
-const parseInstructions = code => code.split(',');
-
-const ternary = (condition, x, y) => condition ? x : y;
-
-const getValue = (type, location, instructions) => {
-  const value = ternary(type === 0, instructions[location], location);
-  return parseInt(value);
-}
-
-const save = (value, location, instructions) => {
-  instructions[location] = value;  
-}
-
-let stdin = [];
-let stdout = [];
-
-const dbg = (x) => console.log(x) || x;
-
-const success = (p, shouldIncrement = true) => dbg([0, ternary(shouldIncrement, p + 1, p)]);
-
-const add = (instructions, p, x, y, z) => save(dbg(x)+dbg(y), z, instructions) || success(p);
-
-const mul = (instructions, p, x, y, z) => save(x * y, z, instructions) || success(p);
-
-const halt = () => {throw "HALT"};
-
-const last = array => array.slice(-1);
-
-const read = (instructions, p, x) => {
-  instructions[x] = stdin();
-  return success(p); 
-}
-
-const write = (instructions, p, x) => {
-  stdout(x);
-  return success(p);
-}
-
-const jumpIfTrue = (instructions, p, x, y) => success(ternary(parseInt(x), y, ++p), false);
-
-const jumpIfFalse = (instructions, p, x, y) =>success(ternary(parseInt(x), ++p, y), false);
-
-const lessThan = (instructions, p, x, y, z) => {
-  const result = ternary(x < y , 1 , 0);
-  save(result, z, instructions);
-  return success(p); 
-}
  
+}
+
 const equalTo = (instructions, p, x, y, z) => {
   const result = ternary(x === y , 1 , 0);
+  save(result, z, instructions);
   return success(p);
 }
 
@@ -58,8 +12,8 @@ const OPCODES = {
 	'02' : {operation : mul, argsCount : 3, lastType : 1},
   '03' : {operation: read, argsCount : 1 , lastType : 1},
   '04' : {operation: write, argsCount : 1, lastType : 0},
-  '05' : {operation: jumpIfTrue, argsCount : 2, lastType : 0},
-  '06' : {operation: jumpIfFalse, argsCount : 2, lastType : 0},
+  '05' : {operation: jumpIfTrue, argsCount : 2, lastType : 1},
+  '06' : {operation: jumpIfFalse, argsCount : 2, lastType : 1},
   '07' : {operation: lessThan, argsCount : 3, lastType : 1},
   '08' : {operation: equalTo, argsCount : 3, lastType : 1},
 	'99' : {operation : halt, argsCount : 0, lastType : 0}
@@ -91,14 +45,12 @@ const getArgs = (instructions, pointer, argTypes, {argsCount, lastType}) => {
   return [args, pointer];
 }
 
-const debugOb = {};
-
 const perform = (pointer, instructions) => {
   const instruction = instructions[pointer].toString();
+  console.log(instruction);
   const [opcode, argTypes] = parseOpcode(instruction);
 	const {operation, ...rest } = getOperations(opcode)
   const [args, np] = getArgs(instructions, pointer, argTypes, rest);
-  debugOb[pointer] = {instruction, opcode, argTypes,args};
   return operation(instructions, np,...args);
 }
 
@@ -107,15 +59,12 @@ const compute = (code, inputReference, outputReference) => {
 	const instructions = parseInstructions(code);
   stdin = inputReference;
   stdout = outputReference;
-  debugOb.stdin = stdin.toString();
-  debugOb.stdout = stdout.toString();
   try {
 		let i = 0;
     let stat = 0;
 		while (i < instructions.length) {
 			const [ns, ni] = perform(i, instructions);
       i = ni;
-      dbg(instructions[i]);
       stat = ns;
 		}
 	} catch(e) {
@@ -155,7 +104,6 @@ const runAllComputations = (signalSets, code) => signalSets.map((set) => last(am
 const findLargestSignal = (code, eligible) => {
   const signalSets = generateCombinations(eligible);
   const computedSignals = runAllComputations(signalSets, code);
-  Deno.writeTextFileSync('debug.js', JSON.stringify(debugOb));
   return Math.max(...computedSignals);
 }
 
