@@ -39,3 +39,21 @@ yes, My code need refactoring. The issues are :
 - [x] Extract the logic of opcode breaking into a function. Test it. Commit it.
 - [x] Extract the fetching the arguments to a different function. Test it. Commit it.
 - [x] Remove the `shouldSave` key and make the add and mul save them. Test it. Commit it.
+
+
+# Part 2
+
+I made a big mistake. I am computing whole program and then going to the next amplifier.
+But that is not how it is done. Instead when opcode 4 is got, we have to stop our execution and move to the next amplifier.
+This continues and this will only stop when the 5th amplifier get the opcode 99.
+
+Now I have to return twice and whenever I get opcode 4, I have to return but also keep the track wher I am and when I come back to the same amplifier and I have to start from there.
+> This can be easily done by using generator function.
+
+That means The `halting` logic of mine is qrong and not anymore usable.
+
+So How can I return from the compute when it is `99` and `4`. Becuase those are separate functions, And if I return there I will only get the value in `compute` function.
+
+> Do I have to return everytime and and in compute see that it is not `4` or `99` and restart the operation.
+
+
