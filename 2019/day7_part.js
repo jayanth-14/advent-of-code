@@ -1,4 +1,4 @@
-import { permutations } from "jsr:@std/collections/permutations";
+let relativeBase = 0;
 
 const add = (array, v1, v2, loc, ip) => {
   array[loc] = v1 + v2;
