@@ -170,5 +170,20 @@ const rebot = (code) => {
 
 const visualiseGrid = code => {
   const grid = rebot(code);
-  console.log(grid);
+  const coords = Object.keys(grid).map(k => k.split(",").map(Number));
+  const xs = coords.map(c => c[0]);
+  const ys = coords.map(c => c[1]);
+
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+
+  for (let y = minY; y <= maxY; y++) {
+    let row = "";
+    for (let x = minX; x <= maxX; x++) {
+      row += grid[`${x},${y}`] === 1 ? "█" : " ";
+    }
+    console.log(row);
+  }
 }
